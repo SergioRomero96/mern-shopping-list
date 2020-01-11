@@ -19,7 +19,14 @@ export default function(state = initialState, action){
         };
         case ADD_ITEM:{
             return {
-
+                ...state,
+                items: [action.item, ...state.items]
+            };
+        };
+        case DELETE_ITEM:{
+            return{
+                ...state,
+                items:state.items.filter((item) => item.id != action.id)
             };
         };
         default: return state;
