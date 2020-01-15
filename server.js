@@ -6,6 +6,7 @@ const config = require('config');
 
 const itemsRoutes = require('./routes/api/items');
 const usersRoutes = require('./routes/api/users');
+const authRoutes = require('./routes/api/auth');
 
 //inicializamos express
 const app = express();
@@ -24,6 +25,7 @@ mongoose.connect(db, { useUnifiedTopology: true, useNewUrlParser: true, useCreat
 //Use Routes
 app.use('/api/items', itemsRoutes);
 app.use('/api/users', usersRoutes);
+app.use('/api/auth', authRoutes);
 
 // Serve static assets if in production
 if (process.env.NODE_ENV === 'production') {
