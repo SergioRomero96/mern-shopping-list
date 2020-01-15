@@ -27,6 +27,7 @@ export default function (state = initialState, action) {
         // eslint-disable-next-line
         case LOGIN_SUCCESS:
         case REGISTER_SUCCESS:
+            localStorage.setItem('token',action.payload.token);
             return {
                 ...state,
                 ...action.payload,
