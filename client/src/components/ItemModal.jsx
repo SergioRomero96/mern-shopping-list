@@ -1,29 +1,34 @@
 import React, { Component } from 'react';
-import {Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button} from 'reactstrap';
-import {connect} from 'react-redux';
-import {addItem} from '../actions/itemActions';
+import { Modal, ModalHeader, ModalBody, Form, FormGroup, Label, Input, Button } from 'reactstrap';
+import { connect } from 'react-redux';
+import { addItem } from '../actions/itemActions';
+import PropTypes from 'prop-types';
 
 class ItemModal extends Component {
-    state ={
+    state = {
         modal: false,
         name: ''
     }
 
-    toogle = () =>{
+    static propTypes = {
+        isAuthenticated: PropTypes.bool
+    }
+
+    toogle = () => {
         this.setState({
             modal: !this.state.modal
         })
     }
 
-    onChange = (e) =>{
+    onChange = (e) => {
         this.setState({
-            [e.target.name] : e.target.value
+            [e.target.name]: e.target.value
         })
     }
 
-    onSubmit = (e) =>{
+    onSubmit = (e) => {
         e.preventDefault();
-        
+
         const newItem = {
             name: this.state.name
         }
@@ -36,7 +41,8 @@ class ItemModal extends Component {
     render() {
         return (
             <div>
-                <Button color="primary" onClick={this.toogle} className="mb-3">Add Item</Button>
+                {this.props.isAuthenticated ? <Button color="primary" className="mb-3" onClick={this.toogle} >Add Item</Button> : <h4 className="mb-3">Please log in to manage items</h4>}
+
                 <Modal isOpen={this.state.modal} toggle={this.toogle} >
                     <ModalHeader toggle={this.toogle}>Add To Shopping List</ModalHeader>
                     <ModalBody>
@@ -44,7 +50,7 @@ class ItemModal extends Component {
                             <FormGroup>
                                 <Label for="item">Item</Label>
                                 <Input type="text" name="name" id="item" placeholder="name item"
-                                onChange={this.onChange}/>
+                                    onChange={this.onChange} />
                                 <Button color="primary" className="mt-2" block>Add Item</Button>
                             </FormGroup>
                         </Form>
@@ -55,11 +61,12 @@ class ItemModal extends Component {
     }
 }
 
-const mapStateToProps = (state) =>({
-    item: state.item
+const mapStateToProps = (state) => ({
+    item: state.item,
+    isAuthenticated: state.auth.isAuthenticated
 })
 
 export default connect(
     mapStateToProps,
-    {addItem}
+    { addItem }
 )(ItemModal);
